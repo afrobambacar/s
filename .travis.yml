@@ -11,6 +11,7 @@ node_js:
 branches:
   only:
   - master
+  - codedeploy
   - dev
   - /^deploy-.*$/
   except:
@@ -53,7 +54,7 @@ deploy:
   local_dir: dpl_cd_upload_client
   skip_cleanup: true
   on: &1
-    branch: master
+    branch: codedeploy
 - provider: s3
   region: $AWS_REGION
   bucket: $AWS_S3_BUCKET
@@ -62,7 +63,7 @@ deploy:
   local_dir: dpl_cd_upload
   skip_cleanup: true
   on: &1
-    branch: master
+    branch: codedeploy
 - provider: codedeploy
   region: $AWS_REGION
   bucket: $AWS_S3_BUCKET
