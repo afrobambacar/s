@@ -22,16 +22,20 @@
 			.pipe(gulp.dest(paths.dist + '/app/client/'));
 	});
 
+	gulp.task('copy:scripts', function () {
+		return gulp.src(['./scripts/**/*'])
+			.pipe(gulp.dest(paths.dist + '/scripts'));
+	});
+
 	gulp.task('copy:etc', function () {
 		return gulp.src([
-				'./.gitlab-ci.yml',
-				'./package.json',
-				'./README.md'
+				'./appspec.yml',
+				'./package.json'
 			])
 			.pipe(gulp.dest(paths.dist));
 	});
 	
-	gulp.task('copy:build', ['copy:images', 'copy:etc'], function () {
+	gulp.task('copy:build', ['copy:images', 'copy:scripts', 'copy:etc'], function () {
 		console.log('completed copy task for build!')
 	});
 })();

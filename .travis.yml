@@ -1,87 +1,76 @@
-# Set up notification options
-notifications: 
-  email:
-    recipients:
-      - jclee.dev@gmail.com
-
-    # change is when the repo status goes from pass to fail or vice versa
-    on_success: change
-    on_failure: always
-
-# specify language
+notifications:
+ email:
+   recipients:
+   - jclee.dev@gmail.com
+   on_success: change
+   on_failure: always
 language: node_js
-
-# specify language options
+dist: trusty
 node_js:
-  - '4'
-
-# configure which branches to run
+- '6'
 branches:
-  # whitelist
   only:
-    - master
-    - /^deploy-.*$/ # regex ok
-  # blacklist
+  - master
+  - dev
+  - /^deploy-.*$/
   except:
-    - dontrunme 
-    - test 
-
+  - dontrunme
+  - test
 cache:
   directories:
-    - "node_modules"
-
-## begin build steps
-####################
-
+  - node_modules
 before_install:
 - npm -v
-
 install:
-  - npm install
-
+- npm install
 before_script:
-  - npm install -g gulp
-
-# test
-script: 
-  - npm test
-
+- npm install -g gulp
+- sudo apt-get install jq
+script:
+- npm test
 after_success:
-  - gulp build
-  # - test $TRAVIS_PULL_REQUEST = false
-  #   && git push
+- gulp build
 
 after_failure:
-  - exit 1
-
-# before_deploy:
-# # check that build passed successfully
-# # add the \ afterwards to tell travis it's part of the same command thanks @markhuge
-# - test $TRAVIS_TEST_RESULT = 0 \
-#   && gulp build
-#   && cd dist \
-#   && npm install --prod \
-#   && cd $TRAVIS_BUILD_DIR \
-#   && tar -zcvf amber-storm-$TRAVIS_BRANCH.tar.gz dist \
-#   && export PRODBUILDCOMPLETE=true
-
-## Deployment options
-####################
-
-# deploy:
-#   # specify the deployment provider
-  # provider: releases
-#   # options for provider
-#   api_key:
-#     secure: securekeyhere
-#   file: myrepo-$TRAVIS_BRANCH.tar.gz
-#   # conditions for deployment
-#   on:
-#     condition: $PRODBUILDCOMPLETE = true
-#     repo: myname/myrepo
-#     all_branches: true
-#     tags: true
-
-# after_deploy:
-#   - ssh git@mysite.biz "./deploy.sh $TRAVIS_BRANCH"
-
+- exit 1
+before_deploy:
+# client only
+- HASH_VAL=`cat dist/app/version.json | jq '.hash' | sed "s/\"//g"`
+- mkdir -p dpl_cd_upload_client/${HASH_VAL}
+- cp -R dist/app/client/ dpl_cd_upload_client/${HASH_VAL}/
+# server only
+- cd dist
+- zip -r ${AWS_CODEDEPLOY_APPNAME} *
+- cd ..
+- mkdir -p dpl_cd_upload
+- mv dist/${AWS_CODEDEPLOY_APPNAME}.zip dpl_cd_upload/${AWS_CODEDEPLOY_APPNAME}.zip
+deploy:
+- provider: s3
+  region: $AWS_REGION
+  bucket: $AWS_S3_BUCKET
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  local_dir: dpl_cd_upload_client
+  skip_cleanup: true
+  on: &1
+    branch: master
+- provider: s3
+  region: $AWS_REGION
+  bucket: $AWS_S3_BUCKET
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  local_dir: dpl_cd_upload
+  skip_cleanup: true
+  on: &1
+    branch: master
+- provider: codedeploy
+  region: $AWS_REGION
+  bucket: $AWS_S3_BUCKET
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  key: ${AWS_CODEDEPLOY_APPNAME}.zip
+  bundle_type: zip
+  application: $AWS_CODEDEPLOY_APPNAME
+  deployment_group: $AWS_DEPLOYMENT_GROUP
+  wait-until-deployed: true
+  on: *1

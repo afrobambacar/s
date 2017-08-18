@@ -1,0 +1,10 @@
+version: 0.0
+os: linux
+files:
+  - source: ./
+    destination: /home/ubuntu/ss/s
+hooks:
+  BeforeInstall:
+    - location: scripts/install.sh
+      timeout: 3000
+      runas: root
