@@ -10,7 +10,7 @@ services:
       NODE_ENV: production
       PORT: 9000
     volumes:
-      - /home/ubuntu/ss/s:/home/app/s
-      - /home/ubuntu/ss/s/package.json:/home/app/s/package.json
-      - /home/ubuntu/ss/s/process.yml:/home/app/s/process.yml
-      - /home/ubuntu/ss/s/s_nginx.conf:/etc/nginx/conf.d/s_nginx.conf
+      - /home/ubuntu/s-web:/home/app/s
+      - /home/ubuntu/s-web/package.json:/home/app/s/package.json
+      - /home/ubuntu/s-web/process.yml:/home/app/s/process.yml
+      - /home/ubuntu/s-web/nginx.conf:/etc/nginx/conf.d/nginx.conf
