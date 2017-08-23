@@ -31,9 +31,6 @@ script:
 - npm test
 after_success:
 - gulp build
-after_failure:
-- exit 1
-before_deploy:
 # client only
 - HASH_VAL=`cat dist/app/version.json | jq '.hash' | sed "s/\"//g"`
 - mkdir -p dpl_cd_upload_client/${HASH_VAL}
@@ -44,6 +41,8 @@ before_deploy:
 - cd ..
 - mkdir -p dpl_cd_upload
 - mv dist/${AWS_CODEDEPLOY_APPNAME}.zip dpl_cd_upload/${AWS_CODEDEPLOY_APPNAME}.zip
+after_failure:
+- exit 1
 deploy:
 - provider: s3
   region: $AWS_REGION
