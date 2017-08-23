@@ -34,9 +34,9 @@ module.exports = function (app) {
   app.use(passport.initialize());
 
   if ('production' === env) {
-    app.use(favicon(path.join(config.root, '/dist/app/client/images/favicon', '/favicon.ico')));
-    app.use(express.static(path.join(config.root, '/dist/app/client')));
-    app.set('appPath', path.join(config.root, '/dist/app/client'));
+    app.use(favicon(path.join(config.root, '/app/client/images/favicon', '/favicon.ico')));
+    app.use(express.static(path.join(config.root, '/app/client')));
+    app.set('appPath', path.join(config.root, '/app/client'));
     
     // todo. improve using glob then cloudfront
     let dependencies = {
@@ -44,7 +44,7 @@ module.exports = function (app) {
       libs: 'libs/' + fs.readdirSync(path.join(app.get('appPath'), 'libs'))[1],
       core: 'core/' + fs.readdirSync(path.join(app.get('appPath'), 'core')),
     };
-    let loaderVersion = require(path.join(config.root, 'dist/app/components.json'));
+    let loaderVersion = require(path.join(config.root, '/app/components.json'));
 
     app.locals = {
       loaderVersion: loaderVersion,
