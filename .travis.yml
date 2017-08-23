@@ -31,7 +31,6 @@ script:
 - npm test
 after_success:
 - gulp build
-
 after_failure:
 - exit 1
 before_deploy:
@@ -48,7 +47,7 @@ before_deploy:
 deploy:
 - provider: s3
   region: $AWS_REGION
-  bucket: $AWS_S3_BUCKET
+  bucket: $AWS_MEDIA_BUCKET
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
   local_dir: dpl_cd_upload_client
@@ -57,7 +56,7 @@ deploy:
     branch: codedeploy
 - provider: s3
   region: $AWS_REGION
-  bucket: $AWS_S3_BUCKET
+  bucket: $AWS_SOURCE_BUCKET
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
   local_dir: dpl_cd_upload
@@ -66,7 +65,7 @@ deploy:
     branch: codedeploy
 - provider: codedeploy
   region: $AWS_REGION
-  bucket: $AWS_S3_BUCKET
+  bucket: $AWS_SOURCE_BUCKET
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_KEY
   key: ${AWS_CODEDEPLOY_APPNAME}.zip
