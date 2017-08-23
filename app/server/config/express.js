@@ -40,9 +40,9 @@ module.exports = function (app) {
     
     // todo. improve using glob then cloudfront
     let dependencies = {
-      css: 'libs/' + fs.readdirSync(path.join(app.get('appPath'), 'libs'))[0],
-      libs: 'libs/' + fs.readdirSync(path.join(app.get('appPath'), 'libs'))[1],
-      core: 'core/' + fs.readdirSync(path.join(app.get('appPath'), 'core')),
+      css: '/libs/' + fs.readdirSync(path.join(app.get('appPath'), 'libs'))[0],
+      libs: '/libs/' + fs.readdirSync(path.join(app.get('appPath'), 'libs'))[1],
+      core: '/core/' + fs.readdirSync(path.join(app.get('appPath'), 'core')),
     };
     let loaderVersion = require(path.join(config.root, '/app/components.json'));
 
