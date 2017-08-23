@@ -2,7 +2,7 @@ version: '3'
 services:
   s-web:
     image: scjang/s-web:latest
-    command: bash -c "service nginx start && yarn cache clean && cd /home/app/s && yarn install && pm2-docker process.yml"
+    command: bash -c "service nginx start && cd /home/app/s && npm install --only=production && pm2-docker process.yml"
     ports:
       - "80:80"
     container_name: s-web
