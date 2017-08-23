@@ -6,6 +6,6 @@ var path = require('path');
  */
 module.exports = {
 	api_server: 'http://api.wouzoo.com',
-  root: path.normalize(__dirname + '/../../../../..'),
+  root: path.normalize(__dirname + '/../../../..'),
   port: 9000
 };
