@@ -9,11 +9,12 @@ hooks:
     - location: scripts/before_install.sh
       timeout: 3000
       runas: root
-  ## docker container restart
+  # docker container stop & pulling the image
   AfterInstall:
     - location: scripts/after_install.sh
       timeout: 3000
       runas: root
+  # docker container restart
   ApplicationStart:
     - location: scripts/application_start.sh
       timeout: 3000
