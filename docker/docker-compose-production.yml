@@ -1,0 +1,16 @@
+version: '3'
+services:
+  s-web:
+    image: scjang/s-web:latest
+    command: bash -c "service nginx start && yarn cache clean && cd /home/app/s && yarn install && pm2-docker process.yml"
+    ports:
+      - "80:80"
+    container_name: s-web
+    environment:
+      NODE_ENV: production
+      PORT: 9000
+    volumes:
+      - /home/ubuntu/ss/s:/home/app/s
+      - /home/ubuntu/ss/s/package.json:/home/app/s/package.json
+      - /home/ubuntu/ss/s/process.yml:/home/app/s/process.yml
+      - /home/ubuntu/ss/s/s_nginx.conf:/etc/nginx/conf.d/s_nginx.conf
