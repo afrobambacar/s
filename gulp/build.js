@@ -132,7 +132,7 @@
     return gulp.src([
       paths.tmp.libs + '/**/*.css'
     ])
-    .pipe($.concat('bootstrap.css'))
+    .pipe($.concat('bootstrap.min.css'))
     .pipe($.postcss(processors))
     .pipe(gulp.dest(paths.tmp.libs))
     .pipe($.debug({title: 'concat:libsCss finished!'}));

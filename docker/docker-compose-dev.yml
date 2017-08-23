@@ -2,7 +2,7 @@ version: '3'
 services:
   s-web:
     image: scjang/s-web:latest
-    command: bash -c "service nginx start && cd /home/app/s && npm install && pm2-docker process.yml"
+    command: bash -c "service nginx start && cd /home/app/s && npm install && gulp serve"
     ports:
       - "9000:9000"
     container_name: s-web
@@ -11,6 +11,3 @@ services:
       PORT: 9000
     volumes:
       - ~/dev/afr5/s:/home/app/s
-      - ~/dev/afr5/s/package.json:/home/app/s/package.json
-      - ~/dev/afr5/s/process.yml:/home/app/s/process.yml
-      - ~/dev/afr5/s/nginx.conf:/etc/nginx/conf.d/s_nginx.conf
