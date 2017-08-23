@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-cd ~/${APPLICATION_NAME}
+cd /home/ubuntu/s-web
 docker-compose -f docker/docker-compose-production.yml up -d
