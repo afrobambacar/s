@@ -1,0 +1,5 @@
+apps:
+  - script   : '/home/app/s/app/server/app.js'
+    name     : 's-web'
+    exec_mode: 'cluster'
+    instances: 4
