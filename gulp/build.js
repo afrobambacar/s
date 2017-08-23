@@ -121,13 +121,8 @@
         paths.tmp.libs + '/moment.js',
         paths.tmp.libs + '/**/*.js'
       ])
-      .pipe($.sourcemaps.init())
-        .pipe($.concat('libs.min.js'))
-        .pipe($.uglify({ output: { quote_style: 1 }}))
-      .pipe($.sourcemaps.write('.', {
-        includeContent: false,
-        sourceMappingURLPrefix: 'https://asset-host.example.com/assets'
-      }))
+      .pipe($.concat('libs.min.js'))
+      .pipe($.uglify({ output: { quote_style: 1 }}))
       .pipe(gulp.dest(paths.tmp.libs))
       .pipe($.debug({title: 'concat:libs finished!'}));
   });
