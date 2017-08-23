@@ -29,6 +29,7 @@
 
 	gulp.task('copy:etc', function () {
 		return gulp.src([
+				'./docker/**/*',
 				'./appspec.yml',
 				'./package.json'
 			])
