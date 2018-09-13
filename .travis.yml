@@ -33,44 +33,45 @@ after_success:
 
 after_failure:
 - exit 1
-before_deploy:
-# client only
-- HASH_VAL=`cat dist/app/version.json | jq '.hash' | sed "s/\"//g"`
-- mkdir -p dpl_cd_upload_client/${HASH_VAL}
-- cp -R dist/app/client/ dpl_cd_upload_client/${HASH_VAL}/
-# server only
-- cd dist
-- zip -r ${AWS_CODEDEPLOY_APPNAME} *
-- cd ..
-- mkdir -p dpl_cd_upload
-- mv dist/${AWS_CODEDEPLOY_APPNAME}.zip dpl_cd_upload/${AWS_CODEDEPLOY_APPNAME}.zip
-deploy:
-- provider: s3
-  region: $AWS_REGION
-  bucket: $AWS_S3_BUCKET
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  local_dir: dpl_cd_upload_client
-  skip_cleanup: true
-  on: &1
-    branch: master
-- provider: s3
-  region: $AWS_REGION
-  bucket: $AWS_S3_BUCKET
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  local_dir: dpl_cd_upload
-  skip_cleanup: true
-  on: &1
-    branch: master
-- provider: codedeploy
-  region: $AWS_REGION
-  bucket: $AWS_S3_BUCKET
-  access_key_id: $AWS_ACCESS_KEY
-  secret_access_key: $AWS_SECRET_KEY
-  key: ${AWS_CODEDEPLOY_APPNAME}.zip
-  bundle_type: zip
-  application: $AWS_CODEDEPLOY_APPNAME
-  deployment_group: $AWS_DEPLOYMENT_GROUP
-  wait-until-deployed: true
-  on: *1
+
+# before_deploy:
+# # client only
+# - HASH_VAL=`cat dist/app/version.json | jq '.hash' | sed "s/\"//g"`
+# - mkdir -p dpl_cd_upload_client/${HASH_VAL}
+# - cp -R dist/app/client/ dpl_cd_upload_client/${HASH_VAL}/
+# # server only
+# - cd dist
+# - zip -r ${AWS_CODEDEPLOY_APPNAME} *
+# - cd ..
+# - mkdir -p dpl_cd_upload
+# - mv dist/${AWS_CODEDEPLOY_APPNAME}.zip dpl_cd_upload/${AWS_CODEDEPLOY_APPNAME}.zip
+# deploy:
+# - provider: s3
+#   region: $AWS_REGION
+#   bucket: $AWS_S3_BUCKET
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
+#   local_dir: dpl_cd_upload_client
+#   skip_cleanup: true
+#   on: &1
+#     branch: master
+# - provider: s3
+#   region: $AWS_REGION
+#   bucket: $AWS_S3_BUCKET
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
+#   local_dir: dpl_cd_upload
+#   skip_cleanup: true
+#   on: &1
+#     branch: master
+# - provider: codedeploy
+#   region: $AWS_REGION
+#   bucket: $AWS_S3_BUCKET
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
+#   key: ${AWS_CODEDEPLOY_APPNAME}.zip
+#   bundle_type: zip
+#   application: $AWS_CODEDEPLOY_APPNAME
+#   deployment_group: $AWS_DEPLOYMENT_GROUP
+#   wait-until-deployed: true
+#   on: *1
